@@ -4,9 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import "./index.css";
 
 /* ─── CONFIG ──────────────────────────────────────────────────────────────── */
-export const API_BASE = import.meta.env.VITE_API_URL
-  ? `${import.meta.env.VITE_API_URL}/api`
-  : "https://firs-bfp-backend-xptk.onrender.com/api";
+export const API_BASE = "https://firs-bfp-backend-xptk.onrender.com/api";
 
 function authHeaders(token) {
   return { "Content-Type": "application/json", Authorization: `Token ${token}` };
