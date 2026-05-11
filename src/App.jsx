@@ -384,6 +384,9 @@ function LoginPage({ onLogin, onForgot }) {
 }
 
 /* ─── FORGOT PASSWORD PAGE ────────────────────────────────────────────────── */
+
+const FORGOT_API = "https://firs-bfp-backend-xptk.onrender.com/api";
+
 function ForgotPage({ onBack }) {
   const [step, setStep]           = useState("email");
   const [email, setEmail]         = useState("");
@@ -403,7 +406,7 @@ function ForgotPage({ onBack }) {
     if (!email.trim()) { setErr("Please enter your email address."); return; }
     setLoading(true);
     try {
-      const res  = await fetch(`${API_BASE}/forgot-password/`, {
+      const res  = await fetch(`${FORGOT_API}/forgot-password/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email.trim() }),
@@ -412,7 +415,7 @@ function ForgotPage({ onBack }) {
       if (!res.ok) { setErr(data.message || "Something went wrong. Please try again."); return; }
       setStep("otp");
     } catch {
-      setErr("Cannot connect to server. Make sure Django is running.");
+      setErr("Cannot connect to server. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -425,7 +428,7 @@ function ForgotPage({ onBack }) {
     if (code.length < 6) { setErr("Please enter the full 6-digit code."); return; }
     setLoading(true);
     try {
-      const res  = await fetch(`${API_BASE}/verify-otp/`, {
+      const res  = await fetch(`${FORGOT_API}/verify-otp/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email.trim(), otp: code }),
@@ -434,7 +437,7 @@ function ForgotPage({ onBack }) {
       if (!res.ok) { setErr(data.message || "Invalid or expired code."); return; }
       setStep("reset");
     } catch {
-      setErr("Cannot connect to server.");
+      setErr("Cannot connect to server. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -448,7 +451,7 @@ function ForgotPage({ onBack }) {
     if (newPass !== confirmPass)   { setErr("Passwords do not match."); return; }
     setLoading(true);
     try {
-      const res  = await fetch(`${API_BASE}/reset-password/`, {
+      const res  = await fetch(`${FORGOT_API}/reset-password/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -462,7 +465,7 @@ function ForgotPage({ onBack }) {
       if (!res.ok) { setErr(data.message || "Failed to reset password."); return; }
       setSuccess(true);
     } catch {
-      setErr("Cannot connect to server.");
+      setErr("Cannot connect to server. Please try again later.");
     } finally {
       setLoading(false);
     }
